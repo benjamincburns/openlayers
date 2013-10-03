@@ -374,6 +374,30 @@
         
         t.xml_eq(node, out, "Check SortBy");
     }
+
+    function test_ValueReferenceInFilterOptionsValue(t) {
+        
+        t.plan(1);
+        
+        var str =
+            '<Filter xmlns="http://www.opengis.net/fes/2.0">' +
+                '<PropertyIsEqualTo>' +
+                    '<ValueReference>some_property</ValueReference>' +
+                    '<ValueReference>some_other_property</ValueReference>' +
+                '</PropertyIsEqualTo>' +
+            '</Filter>';
+
+        var format = new OpenLayers.Format.Filter.v2_0_0();
+        var filter = new OpenLayers.Filter.Comparison({
+            type: OpenLayers.Filter.Comparison.EQUAL_TO,
+            property: "some_property",
+            value: "${some_other_property}",
+        });
+        
+        // test writing
+        var node = format.write(filter);
+        t.xml_eq(node, str, "filter correctly written");
+    }
     </script> 
 </head> 
 <body>
